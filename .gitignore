@@ -1,0 +1,5 @@
+Debug/
+JLinkLog.log
+.settings/com.renesas.cdt.ddsc.packs.componentfiles.prefs
+.settings/e2studio_project.prefs
+.settings/language.settings.xml
