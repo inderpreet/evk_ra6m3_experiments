@@ -20,6 +20,7 @@
 
 #include "hal_data.h"
 #include "app.h"
+#include "task2.h"
 
 void R_BSP_WarmStart(bsp_warm_start_event_t event);
 
@@ -49,6 +50,7 @@ void hal_entry(void) {
 
 	while (1) {
 		task1();
+		task2();
 	}
 }
 

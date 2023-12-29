@@ -12,9 +12,15 @@ This respository is essentially me messing around with the RA6M3 Dev Kit.
 
 I have the Ra6M3 dev kit with an oscilloscope and a Mikro UART Click board.
 
-- UART7 is used for the serial data at 115200.
+- UART7 is used for the serial data at 115200. 
 - P0207 is used as a GPIO. I connected a Scope here
 - Timer 0 is used to generate an interrupt and I have a global variable to count up.
+
+## Interrupts
+
+There are two interrupts setup for this system. 
+```tmr0_callback()``` is called everytime the timer expires.
+```uart_callback()``` is called everytime data is transmitted or received on the UART.
 
 ## mon
 

@@ -24,6 +24,7 @@ volatile const uint8_t str1[] = "Hello, World\n\r"; // 14 len
 volatile uint32_t g_receive_complete = 0;
 volatile uint32_t g_transfer_complete = 0;
 volatile uint32_t g_rx_data;
+volatile uint32_t g_rx_flag = 0;
 
 /******************************************************************************
  *
@@ -102,7 +103,6 @@ void tmr0_callback(timer_callback_args_t *p_args) {
 	}
 }
 
-
 /******************************************************************************
  *
  * FUNCTION NAME: uart_callback
@@ -127,6 +127,7 @@ void uart_callback(uart_callback_args_t *p_args) {
 	/* Received a character */
 	case UART_EVENT_RX_CHAR: {
 		g_rx_data = p_args->data;
+		g_rx_flag = 1;
 		break;
 	}
 		/* Receive complete */
