@@ -21,6 +21,9 @@
 volatile uint32_t g_systick_counter = 0;
 extern bsp_leds_t g_bsp_leds;
 volatile const uint8_t str1[] = "Hello, World\n\r"; // 14 len
+volatile uint32_t g_receive_complete = 0;
+volatile uint32_t g_transfer_complete = 0;
+volatile uint32_t g_rx_data;
 
 /******************************************************************************
  *
@@ -72,8 +75,8 @@ void mon_send(void) {
  *
  * DESCRIPTION:
  * - Callback function for Timer 0. Function is called every 1ms as
- * 		per setting in BSP/FSP. Global variable g_systick_counter is incremented
- * 		everytime there is a call.
+ * 		per setting in BSP/FSP. Global variable g_systick_counter is
+ * 		incremented every time there is a call.
  * - Also toggles GPIO at P207 at 1ms
  *
  * CREATED BY:
@@ -88,7 +91,6 @@ void mon_send(void) {
  *****************************************************************************/
 void tmr0_callback(timer_callback_args_t *p_args) {
 	static uint8_t level = 0;
-//    __NOP();
 	g_systick_counter++;
 
 	// Toggle GPIO P207
@@ -98,6 +100,62 @@ void tmr0_callback(timer_callback_args_t *p_args) {
 	} else {
 		level = 0;
 	}
+}
+
+
+/******************************************************************************
+ *
+ * FUNCTION NAME: uart_callback
+ *
+ * DESCRIPTION:
+ * - Callback function for uart7. Function is called every time uart TX or RX
+ * 		is completed successfully.
+ *
+ * CREATED BY:
+ * Inderpreet Singh
+ *
+ * PARAMETERS:
+ *
+ * RETURN VALUE:  None.
+ *
+ * Notes:  None.
+ *
+ *****************************************************************************/
+void uart_callback(uart_callback_args_t *p_args) {
+	/* Handle the UART event */
+	switch (p_args->event) {
+	/* Received a character */
+	case UART_EVENT_RX_CHAR: {
+		/* Only put the next character in the receive buffer if there is space for it */
+//		if (sizeof(g_out_of_band_received) > g_out_of_band_index) {
+//			/* Write either the next one or two bytes depending on the receive data size */
+//			if (UART_DATA_BITS_8 >= g_uart0_cfg.data_bits) {
+//				g_out_of_band_received[g_out_of_band_index++] =
+//						(uint8_t) p_args->data;
+//			} else {
+//				uint16_t *p_dest =
+//						(uint16_t*) &g_out_of_band_received[g_out_of_band_index];
+//				*p_dest = (uint16_t) p_args->data;
+//				g_out_of_band_index += 2;
+//			}
+//		}
+		g_rx_data = p_args->data;
+		break;
+	}
+		/* Receive complete */
+	case UART_EVENT_RX_COMPLETE: {
+		g_receive_complete = 1;
+		break;
+	}
+		/* Transmit complete */
+	case UART_EVENT_TX_COMPLETE: {
+		g_transfer_complete = 1;
+		break;
+	}
+	default: {
+	}
+	}
+
 }
 
 /******************************************************************************

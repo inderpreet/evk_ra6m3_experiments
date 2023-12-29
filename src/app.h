@@ -11,7 +11,7 @@
 void mon_init(void);
 void mon_send(void);
 void task1(void);
-
+void uart_callback(uart_callback_args_t *p_args);
 
 
 #endif /* APP_H_ */
