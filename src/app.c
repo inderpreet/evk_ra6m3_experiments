@@ -126,19 +126,6 @@ void uart_callback(uart_callback_args_t *p_args) {
 	switch (p_args->event) {
 	/* Received a character */
 	case UART_EVENT_RX_CHAR: {
-		/* Only put the next character in the receive buffer if there is space for it */
-//		if (sizeof(g_out_of_band_received) > g_out_of_band_index) {
-//			/* Write either the next one or two bytes depending on the receive data size */
-//			if (UART_DATA_BITS_8 >= g_uart0_cfg.data_bits) {
-//				g_out_of_band_received[g_out_of_band_index++] =
-//						(uint8_t) p_args->data;
-//			} else {
-//				uint16_t *p_dest =
-//						(uint16_t*) &g_out_of_band_received[g_out_of_band_index];
-//				*p_dest = (uint16_t) p_args->data;
-//				g_out_of_band_index += 2;
-//			}
-//		}
 		g_rx_data = p_args->data;
 		break;
 	}
